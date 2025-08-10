@@ -1,0 +1,14 @@
+pandas
+numpy
+matplotlib
+seaborn
+jupyterlab
+yfinance
+scipy
+statsmodels
+pmdarima
+scikit-learn
+pyportfolioopt
+notebook
+ipykernel
+python-dotenv
