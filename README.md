@@ -1,79 +1,75 @@
-Task 1 — Preprocess and Explore Financial Data
-Overview
+# Task 1: Preprocess and Explore Financial Time Series Data
 
-This task covers the initial data acquisition, cleaning, and exploratory analysis stages for the Time Series Forecasting for Portfolio Management Optimization project. The goal is to fetch historical financial data for key assets, preprocess the data to ensure quality, and perform exploratory data analysis (EDA) to extract insights for later modeling.
-Objectives
+## Project Overview
 
-    Download historical stock and ETF data for:
+This task involves downloading, cleaning, and exploring historical financial data for three key assets to prepare for subsequent modeling:
 
-        Tesla (TSLA)
+- **TSLA**: High return potential with high volatility (growth stock).
+- **BND**: Low-risk, stable bond ETF.
+- **SPY**: Broad market exposure ETF with moderate risk.
 
-        Vanguard Total Bond Market ETF (BND)
+The goal is to understand the characteristics of the data, identify patterns, and prepare the dataset for time series modeling in later tasks.
 
-        S&P 500 ETF (SPY)
+---
 
-    Clean and preprocess the data:
+## Data Extraction
 
-        Handle missing values and ensure consistent business-day indexing
+- Data is sourced from [Yahoo Finance](https://finance.yahoo.com/) using the `yfinance` Python package.
+- Historical daily price data (adjusted close prices) is collected for the period from **2015-07-01** to **2025-07-31**.
+- Multiple tickers are downloaded simultaneously for efficient data management.
 
-        Calculate returns, log returns, and rolling volatility
+---
 
-    Conduct exploratory data analysis:
+## Data Cleaning and Preprocessing
 
-        Visualize price trends and volatility
+- Ensured all columns have correct data types.
+- Checked and handled missing data by forward/backward filling to maintain time series continuity.
+- Reindexed data to business days to align with trading calendar.
+- Computed additional features:
+  - Daily returns and log returns.
+  - Rolling volatility and rolling mean with a 21-day window (~1 month).
 
-        Detect outliers and analyze extreme return days
+---
 
-        Test stationarity of price and returns series (Augmented Dickey-Fuller test)
+## Exploratory Data Analysis (EDA)
 
-        Calculate key risk metrics such as Value at Risk (VaR) and Sharpe Ratio
+- Visualized adjusted closing prices to identify long-term trends and price behavior.
+- Plotted daily percentage changes to analyze volatility and return distribution.
+- Calculated rolling statistics to capture short-term fluctuations.
+- Conducted outlier detection by highlighting days with unusually high or low returns.
+- Performed Augmented Dickey-Fuller (ADF) tests on price and return series to assess stationarity, a critical assumption for time series modeling.
 
-Files
+---
 
-    src/data_loader.py
-    Contains reusable functions for downloading data using yfinance, preprocessing, and feature engineering.
+## Key Insights
 
-    notebooks/01_task1_preprocess_explore.ipynb
-    Jupyter Notebook demonstrating the end-to-end workflow for Task 1, including data loading, cleaning, EDA visualizations, and statistical tests.
+- Tesla’s stock (TSLA) exhibits strong upward trends with pronounced volatility.
+- BND offers a much more stable, less volatile return profile.
+- SPY tracks the overall market with moderate volatility.
+- Stationarity tests reveal that price series are generally non-stationary, requiring differencing for ARIMA modeling.
+- Daily returns show varying volatility over time, highlighting periods of market stress and calm.
 
-Dependencies
+---
 
-    Python 3.11+ (recommended)
+## Usage
 
-    pandas
+- The main data loading and preprocessing functions reside in `src/data_loader.py`.
+- The Jupyter notebook `notebooks/01_task1_preprocess_explore.ipynb` contains a step-by-step EDA walkthrough with visualizations and commentary.
+- All processed data is saved under the `data/` directory.
 
-    numpy
+---
 
-    yfinance
+## Dependencies
 
-    matplotlib
+- Python 3.8+
+- pandas
+- numpy
+- yfinance
+- matplotlib
+- seaborn
+- statsmodels
 
-    seaborn
+Install dependencies with:
 
-    statsmodels
-
-    scipy
-
-Install dependencies via:
-
-pip install pandas numpy yfinance matplotlib seaborn statsmodels scipy
-
-How to Run
-
-    Clone the repo.
-
-    Create a Python virtual environment and install dependencies.
-
-    Run the Jupyter notebook:
-
-jupyter notebook notebooks/01_task1_preprocess_explore.ipynb
-
-    Follow the notebook to reproduce the preprocessing and exploratory analysis.
-
-Notes
-
-    The data covers the period from July 1, 2015, to July 31, 2025.
-
-    Adjusted Close prices are used for all return calculations.
-
-    The notebook and code are structured to allow easy extension for forecasting and portfolio optimization tasks.
+```bash
+pip install -r requirements.txt
