@@ -1,75 +1,167 @@
-# Task 1: Preprocess and Explore Financial Time Series Data
+# Time Series Forecasting for Portfolio Management Optimization
 
 ## Project Overview
 
-This task involves downloading, cleaning, and exploring historical financial data for three key assets to prepare for subsequent modeling:
-
-- **TSLA**: High return potential with high volatility (growth stock).
-- **BND**: Low-risk, stable bond ETF.
-- **SPY**: Broad market exposure ETF with moderate risk.
-
-The goal is to understand the characteristics of the data, identify patterns, and prepare the dataset for time series modeling in later tasks.
+This project focuses on applying time series forecasting techniques and portfolio optimization strategies to improve investment decisions for Guide Me in Finance (GMF) Investments. Using historical financial data from Tesla (TSLA), Vanguard Total Bond Market ETF (BND), and S&P 500 ETF (SPY), we build predictive models to forecast market trends, optimize portfolio allocation based on these forecasts, and backtest strategies against benchmarks.
 
 ---
 
-## Data Extraction
+## Task 1: Preprocess and Explore Financial Time Series Data
 
-- Data is sourced from [Yahoo Finance](https://finance.yahoo.com/) using the `yfinance` Python package.
-- Historical daily price data (adjusted close prices) is collected for the period from **2015-07-01** to **2025-07-31**.
-- Multiple tickers are downloaded simultaneously for efficient data management.
+### Overview
 
----
+Download, clean, and explore historical financial data for three key assets to understand data characteristics and prepare for modeling:
 
-## Data Cleaning and Preprocessing
+- **TSLA:** High-return potential, high volatility.
+- **BND:** Low-risk, stable bond ETF.
+- **SPY:** Broad market ETF with moderate risk.
 
-- Ensured all columns have correct data types.
-- Checked and handled missing data by forward/backward filling to maintain time series continuity.
-- Reindexed data to business days to align with trading calendar.
-- Computed additional features:
-  - Daily returns and log returns.
-  - Rolling volatility and rolling mean with a 21-day window (~1 month).
+### Data Extraction
 
----
+- **Source:** Yahoo Finance via the `yfinance` Python package.
+- **Period:** July 1, 2015 – July 31, 2025.
+- Downloaded daily OHLCV (Open, High, Low, Close, Volume) data and computed derived metrics.
 
-## Exploratory Data Analysis (EDA)
+### Data Cleaning and Preprocessing
 
-- Visualized adjusted closing prices to identify long-term trends and price behavior.
-- Plotted daily percentage changes to analyze volatility and return distribution.
-- Calculated rolling statistics to capture short-term fluctuations.
-- Conducted outlier detection by highlighting days with unusually high or low returns.
-- Performed Augmented Dickey-Fuller (ADF) tests on price and return series to assess stationarity, a critical assumption for time series modeling.
+- Ensured correct data types and handled missing data with interpolation or forward fill.
+- Aligned data to trading calendar business days.
+- Created additional features such as daily returns, rolling volatility, and rolling means.
 
----
+### Exploratory Data Analysis (EDA)
 
-## Key Insights
+- Visualized price trends and volatility.
+- Detected outliers and unusual return events.
+- Conducted stationarity tests (ADF test) to guide modeling approach.
 
-- Tesla’s stock (TSLA) exhibits strong upward trends with pronounced volatility.
-- BND offers a much more stable, less volatile return profile.
-- SPY tracks the overall market with moderate volatility.
-- Stationarity tests reveal that price series are generally non-stationary, requiring differencing for ARIMA modeling.
-- Daily returns show varying volatility over time, highlighting periods of market stress and calm.
+### Key Insights
 
----
+- Tesla exhibits significant growth and volatility.
+- BND provides stability.
+- Price series mostly non-stationary; returns more stationary.
 
-## Usage
+### Usage
 
-- The main data loading and preprocessing functions reside in `src/data_loader.py`.
-- The Jupyter notebook `notebooks/01_task1_preprocess_explore.ipynb` contains a step-by-step EDA walkthrough with visualizations and commentary.
-- All processed data is saved under the `data/` directory.
+See `notebooks/01_task1_preprocess_explore.ipynb` for step-by-step walkthrough.
 
 ---
 
-## Dependencies
+## Task 2: Develop Time Series Forecasting Models
+
+### Overview
+
+Build and compare forecasting models to predict Tesla stock prices:
+
+- **ARIMA/SARIMA:** Classical statistical approach.
+- **LSTM:** Deep learning model for sequential data.
+
+### Approach
+
+- Chronologically split data into training (2015-2023) and testing (2024-2025).
+- Use grid search and `auto_arima` for parameter tuning in ARIMA.
+- Design LSTM architecture, tune epochs and batch sizes.
+- Evaluate models using MAE, RMSE, and MAPE metrics.
+
+### Key Results
+
+- Forecasts generated for test period.
+- Model comparison showing trade-offs between complexity and performance.
+
+### Usage
+
+See `notebooks/02_task2_modeling.ipynb` for detailed model building and evaluation.
+
+---
+
+## Task 3: Forecast Future Market Trends
+
+### Overview
+
+Use the best-performing forecasting model to generate 6-12 month price forecasts for Tesla.
+
+### Forecasting
+
+- Produce future price predictions with confidence intervals.
+- Visualize forecasts alongside historical data.
+
+### Interpretation
+
+- Analyze trend direction and pattern anomalies.
+- Assess forecast uncertainty via confidence interval width.
+- Discuss market opportunities and risks implied by forecasts.
+
+### Usage
+
+See `notebooks/03_task3_forecast_analysis.ipynb`.
+
+---
+
+## Task 4: Optimize Portfolio Based on Forecast
+
+### Overview
+
+Use forecasted returns for Tesla combined with historical returns for BND and SPY to construct an optimized portfolio using Modern Portfolio Theory (MPT).
+
+### Steps
+
+- Compute expected returns vector: forecasted Tesla returns + historical averages for BND, SPY.
+- Calculate covariance matrix of daily returns for all assets.
+- Generate Efficient Frontier portfolios.
+- Identify and mark:
+  - Maximum Sharpe Ratio Portfolio (Tangency portfolio).
+  - Minimum Volatility Portfolio.
+- Select and justify an optimal portfolio based on risk-return preferences.
+
+### Summary
+
+Provide portfolio weights, expected annual return, volatility, and Sharpe ratio.
+
+### Usage
+
+See `notebooks/04_task4_portfolio_optimization.ipynb`.
+
+---
+
+## Task 5: Strategy Backtesting
+
+### Overview
+
+Validate portfolio strategy by simulating its performance over the most recent year and compare against a benchmark.
+
+### Methodology
+
+- Backtesting period: August 1, 2024 – July 31, 2025.
+- Benchmark: Static 60% SPY / 40% BND portfolio.
+- Strategy portfolio: Optimal weights from Task 4 (or Tesla-only simplified version).
+- Hold weights fixed for the year (no monthly rebalancing for simplicity).
+- Calculate cumulative returns and risk-adjusted metrics (Sharpe ratio).
+
+### Results
+
+- Plot cumulative returns of strategy vs. benchmark.
+- Summarize total return and Sharpe ratio.
+- Discuss strategy viability based on performance.
+
+### Usage
+
+See `notebooks/05_task5_backtesting.ipynb`.
+
+---
+
+## Project Dependencies
 
 - Python 3.8+
 - pandas
 - numpy
-- yfinance
 - matplotlib
 - seaborn
+- yfinance
 - statsmodels
+- pmdarima
+- tensorflow / keras (for LSTM)
+- PyPortfolioOpt (for portfolio optimization)
 
-Install dependencies with:
+### Install dependencies using:
 
 ```bash
 pip install -r requirements.txt
